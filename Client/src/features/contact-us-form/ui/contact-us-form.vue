@@ -30,10 +30,13 @@
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
 				Email Address
 			</legend>
-			<div class="email-input__field">
-				<label class="email-input__label" for="email-address">Email Address <span>*</span></label>
-				<input id="email-address" class="email-input" name="email-address" type="email" />
-			</div>
+			<Input
+				input-id="email-address"
+				input-name="email-address"
+				input-type="email"
+				label-for="email-address"
+				label-text="Email Address"
+			/>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--block">
@@ -137,37 +140,6 @@
 
 	.contact-us-form__input-group--gap--large {
 		row-gap: 24rem;
-	}
-
-	.email-input__field {
-		display: flex;
-		flex-direction: column;
-		row-gap: 8rem;
-	}
-
-	.email-input__label {
-		display: flex;
-		flex-direction: row;
-		font-family: var(--font-family), sans-serif;
-		font-weight: 400;
-		font-size: 16rem;
-		line-height: 150%;
-		color: var(--color-grey-900);
-		column-gap: 8rem;
-
-		> span {
-			font-family: var(--font-family), sans-serif;
-			font-weight: 400;
-			font-size: 16rem;
-			line-height: 150%;
-			color: var(--color-green-600);
-		}
-	}
-
-	.email-input {
-		border: 1rem solid var(--color-grey-500);
-		border-radius: 8rem;
-		padding: 12rem 24rem;
 	}
 
 	.textarea__field {
