@@ -63,10 +63,13 @@
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
 				Message Text
 			</legend>
-			<div class="textarea__field">
-				<label class="textarea__label" for="message">Message <span>*</span></label>
-				<textarea id="message" class="textarea" name="message"></textarea>
-			</div>
+			<Input
+				input-id="message"
+				input-name="message"
+				input-type="textarea"
+				label-for="message"
+				label-text="Message"
+			/>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
@@ -148,38 +151,6 @@
 
 	.contact-us-form__input-group--gap--normal {
 		row-gap: 16rem;
-	}
-
-	.textarea__field {
-		display: flex;
-		flex-direction: column;
-		row-gap: 8rem;
-	}
-
-	.textarea__label {
-		display: flex;
-		flex-direction: row;
-		font-family: var(--font-family), sans-serif;
-		font-weight: 400;
-		font-size: 16rem;
-		line-height: 150%;
-		color: var(--color-grey-900);
-		column-gap: 8rem;
-
-		> span {
-			font-family: var(--font-family), sans-serif;
-			font-weight: 400;
-			font-size: 16rem;
-			line-height: 150%;
-			color: var(--color-green-600);
-		}
-	}
-
-	.textarea {
-		border: 1rem solid var(--color-grey-500);
-		border-radius: 8rem;
-		padding: 12rem 24rem;
-		height: 240rem;
 	}
 
 	.checkbox-input__field {

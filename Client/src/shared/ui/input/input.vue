@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-	import { Input } from "@shared/ui/input/index";
-
 	type InputProps = {
 		labelText: string;
 		labelFor: string;
 		inputName: string;
 		inputId: string;
-		inputType: "text" | "email" | "radio";
+		inputType: "text" | "email" | "radio" | "textarea";
 	};
 
 	const { labelText, labelFor, inputName, inputId, inputType = "text" } = defineProps<InputProps>();
@@ -26,6 +24,17 @@
 		<span class="radio-input__radio-mark"></span>
 		<span class="radio-input__label-name">{{ labelText }}</span>
 	</label>
+	<div v-else-if="inputType === 'textarea'" class="textarea__field">
+		<label :for="labelFor" class="textarea__label">{{ labelText }} <span>*</span></label>
+		<textarea
+			:id="inputId"
+			:name="inputName"
+			autocomplete="off"
+			class="textarea"
+			spellcheck="true"
+			wrap="soft"
+		></textarea>
+	</div>
 </template>
 
 <style scoped>
@@ -65,6 +74,12 @@
 		color: var(--color-grey-900);
 	}
 
+	.email-input__field {
+		display: flex;
+		flex-direction: column;
+		row-gap: 8rem;
+	}
+
 	.email-input__label {
 		display: flex;
 		flex-direction: row;
@@ -88,6 +103,11 @@
 		border: 1rem solid var(--color-grey-500);
 		border-radius: 8rem;
 		padding: 12rem 24rem;
+		font-family: var(--font-family), sans-serif;
+		font-weight: 400;
+		font-size: 18rem;
+		line-height: 150%;
+		color: var(--color-grey-900);
 	}
 
 	.radio-input {
@@ -140,6 +160,44 @@
 	}
 
 	.radio-input__label-name {
+		font-family: var(--font-family), sans-serif;
+		font-weight: 400;
+		font-size: 18rem;
+		line-height: 150%;
+		color: var(--color-grey-900);
+	}
+
+	.textarea__field {
+		display: flex;
+		flex-direction: column;
+		row-gap: 8rem;
+	}
+
+	.textarea__label {
+		display: flex;
+		flex-direction: row;
+		font-family: var(--font-family), sans-serif;
+		font-weight: 400;
+		font-size: 16rem;
+		line-height: 150%;
+		color: var(--color-grey-900);
+		column-gap: 8rem;
+
+		> span {
+			font-family: var(--font-family), sans-serif;
+			font-weight: 400;
+			font-size: 16rem;
+			line-height: 150%;
+			color: var(--color-green-600);
+		}
+	}
+
+	.textarea {
+		border: 1rem solid var(--color-grey-500);
+		border-radius: 8rem;
+		padding: 12rem 24rem;
+		height: 240rem;
+		resize: none !important;
 		font-family: var(--font-family), sans-serif;
 		font-weight: 400;
 		font-size: 18rem;
