@@ -1,4 +1,6 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+	import { Input } from "@shared/ui/input";
+</script>
 
 <template>
 	<form class="contact-us-form">
@@ -8,14 +10,20 @@
 				First&Last Name
 			</legend>
 			<div class="contact-us-form__input-group contact-us-form__input-group--gap--large">
-				<div class="text-input__field">
-					<label class="text-input__label" for="first-name">First Name <span>*</span></label>
-					<input id="first-name" class="text-input" name="first-name" type="text" />
-				</div>
-				<div class="text-input__field">
-					<label class="text-input__label" for="last-name">Last Name <span>*</span></label>
-					<input id="last-name" class="text-input" name="last-name" type="text" />
-				</div>
+				<Input
+					input-id="first-name"
+					input-name="first-name"
+					input-type="text"
+					label-for="first-name"
+					label-text="First Name"
+				/>
+				<Input
+					input-id="last-name"
+					input-name="last-name"
+					input-type="text"
+					label-for="last-name"
+					label-text="Last Name"
+				/>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
@@ -129,37 +137,6 @@
 
 	.contact-us-form__input-group--gap--large {
 		row-gap: 24rem;
-	}
-
-	.text-input__field {
-		display: flex;
-		flex-direction: column;
-		row-gap: 8rem;
-	}
-
-	.text-input__label {
-		display: flex;
-		flex-direction: row;
-		font-family: var(--font-family), sans-serif;
-		font-weight: 400;
-		font-size: 16rem;
-		line-height: 150%;
-		color: var(--color-grey-900);
-		column-gap: 8rem;
-
-		> span {
-			font-family: var(--font-family), sans-serif;
-			font-weight: 400;
-			font-size: 16rem;
-			line-height: 150%;
-			color: var(--color-green-600);
-		}
-	}
-
-	.text-input {
-		border: 1rem solid var(--color-grey-500);
-		border-radius: 8rem;
-		padding: 12rem 24rem;
 	}
 
 	.email-input__field {
