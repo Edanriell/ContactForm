@@ -42,17 +42,21 @@
 			<legend class="contact-us-form__legend contact-us-form__legend--display--block">
 				Query Type <span>*</span>
 			</legend>
-			<div class="contact-us-form__input-group">
-				<label for="query-type">
-					<input id="general-enquiry" class="radio-input" name="query-type" type="radio" />
-					<span class="radio-input__radio-mark"></span>
-					<span class="radio-input__label-name">General Enquiry</span>
-				</label>
-				<label for="query-type">
-					<input id="support-request" class="radio-input" name="query-type" type="radio" />
-					<span class="radio-input__radio-mark"></span>
-					<span class="radio-input__label-name">Support Request</span>
-				</label>
+			<div class="contact-us-form__input-group contact-us-form__input-group--gap--normal">
+				<Input
+					input-id="general-enquiry"
+					input-name="query-type"
+					input-type="radio"
+					label-for="query-type"
+					label-text="General Enquiry"
+				/>
+				<Input
+					input-id="support-request"
+					input-name="query-type"
+					input-type="radio"
+					label-for="query-type"
+					label-text="Support Request"
+				/>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
@@ -140,6 +144,10 @@
 
 	.contact-us-form__input-group--gap--large {
 		row-gap: 24rem;
+	}
+
+	.contact-us-form__input-group--gap--normal {
+		row-gap: 16rem;
 	}
 
 	.textarea__field {
