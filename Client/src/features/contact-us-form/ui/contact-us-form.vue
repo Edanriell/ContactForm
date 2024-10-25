@@ -75,17 +75,13 @@
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
 				Service Agreement
 			</legend>
-			<div class="checkbox-input__field">
-				<label class="checkbox-input__label" for="service-agreement"
-					>I consent to being contacted by the team <span>*</span></label
-				>
-				<input
-					id="service-agreement"
-					class="checkbox-input"
-					name="service-agreement"
-					type="checkbox"
-				/>
-			</div>
+			<Input
+				input-id="service-agreement"
+				input-name="service-agreement"
+				input-type="checkbox"
+				label-for="service-agreement"
+				label-text="I consent to being contacted by the team"
+			/>
 		</fieldset>
 		<button class="button" type="submit">Submit</button>
 	</form>
@@ -151,31 +147,6 @@
 
 	.contact-us-form__input-group--gap--normal {
 		row-gap: 16rem;
-	}
-
-	.checkbox-input__field {
-		display: flex;
-		flex-direction: row-reverse;
-		align-items: center;
-		column-gap: 16rem;
-		margin-top: 40rem;
-		margin-bottom: 40rem;
-	}
-
-	.checkbox-input__label {
-		font-family: var(--font-family), sans-serif;
-		font-weight: 400;
-		font-size: 16rem;
-		line-height: 150%;
-		color: var(--color-grey-900);
-
-		> span {
-			font-family: var(--font-family), sans-serif;
-			font-weight: 400;
-			font-size: 16rem;
-			line-height: 150%;
-			color: var(--color-green-600);
-		}
 	}
 
 	.button {

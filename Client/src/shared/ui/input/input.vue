@@ -4,7 +4,7 @@
 		labelFor: string;
 		inputName: string;
 		inputId: string;
-		inputType: "text" | "email" | "radio" | "textarea";
+		inputType: "text" | "email" | "radio" | "textarea" | "checkbox";
 	};
 
 	const { labelText, labelFor, inputName, inputId, inputType = "text" } = defineProps<InputProps>();
@@ -35,6 +35,11 @@
 			wrap="soft"
 		></textarea>
 	</div>
+	<label v-else-if="inputType === 'checkbox'" :for="labelFor" class="checkbox-input__label">
+		<input :id="inputId" :name="inputName" class="checkbox-input" type="checkbox" />
+		<span class="checkbox-input__check-mark"></span>
+		<span class="checkbox-input__label-name">{{ labelText }} <span>*</span></span>
+	</label>
 </template>
 
 <style scoped>
@@ -117,6 +122,7 @@
 	}
 
 	.radio-input__label {
+		position: relative;
 		display: flex;
 		align-items: center;
 		cursor: pointer;
@@ -203,5 +209,43 @@
 		font-size: 18rem;
 		line-height: 150%;
 		color: var(--color-grey-900);
+	}
+
+	.checkbox-input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+	}
+
+	.checkbox-input__label {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		column-gap: 19rem;
+	}
+
+	.checkbox-input__label-name {
+		font-family: var(--font-family), sans-serif;
+		font-weight: 400;
+		font-size: 16rem;
+		line-height: 150%;
+		color: var(--color-grey-900);
+
+		> span {
+			font-family: var(--font-family), sans-serif;
+			font-weight: 400;
+			font-size: 16rem;
+			line-height: 150%;
+			color: var(--color-green-600);
+		}
+	}
+
+	.checkbox-input__check-mark {
+		display: block;
+		width: 18rem;
+		height: 18rem;
+		border: 1rem solid var(--color-grey-500);
+		border-radius: 2rem;
 	}
 </style>
