@@ -1,5 +1,26 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+	type ButtonProps = {
+		buttonText: string;
+	};
 
-<template></template>
+	const { buttonText } = defineProps<ButtonProps>();
+</script>
 
-<style scoped></style>
+<template>
+	<button class="button" type="submit">{{ buttonText }}</button>
+</template>
+
+<style scoped>
+	.button {
+		border-radius: 8rem;
+		padding: 16rem 0;
+		background: var(--color-green-600);
+		width: 100%;
+		font-family: var(--font-family), sans-serif;
+		font-weight: 700;
+		font-size: 18rem;
+		line-height: 150%;
+		color: var(--color-white);
+		cursor: pointer;
+	}
+</style>

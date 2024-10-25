@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 	import { Input } from "@shared/ui/input";
+	import { Button } from "@shared/ui/button";
 </script>
 
 <template>
@@ -83,7 +84,7 @@
 				label-text="I consent to being contacted by the team"
 			/>
 		</fieldset>
-		<button class="button" type="submit">Submit</button>
+		<Button button-text="Submit" />
 	</form>
 </template>
 
