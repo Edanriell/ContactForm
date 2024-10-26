@@ -47,6 +47,10 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 8rem;
+
+		@media (width >= 768px) {
+			width: 100%;
+		}
 	}
 
 	.text-input__label {
@@ -135,6 +139,10 @@
 		transition:
 			border 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955),
 			background 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+		@media (width >= 768px) {
+			width: 100%;
+		}
 	}
 
 	.radio-input__radio-mark {
@@ -209,6 +217,10 @@
 		font-size: 18rem;
 		line-height: 150%;
 		color: var(--color-grey-900);
+
+		@media (width >=768px) {
+			height: 132rem;
+		}
 	}
 
 	.checkbox-input {

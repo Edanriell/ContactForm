@@ -99,6 +99,13 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 24rem;
+
+		@media (width >= 768px) {
+			padding: 40rem;
+			margin: 128rem 39rem;
+			max-width: 690rem;
+			width: 100%;
+		}
 	}
 
 	.contact-us-form__title {
@@ -153,13 +160,25 @@
 	.contact-us-form__input-group {
 		display: flex;
 		flex-direction: column;
+
+		@media (width >= 768px) {
+			flex-direction: row;
+		}
 	}
 
 	.contact-us-form__input-group--gap--large {
 		row-gap: 24rem;
+
+		@media (width >= 768px) {
+			column-gap: 16rem;
+		}
 	}
 
 	.contact-us-form__input-group--gap--normal {
 		row-gap: 16rem;
+
+		@media (width >= 768px) {
+			column-gap: 16rem;
+		}
 	}
 </style>
