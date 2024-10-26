@@ -40,7 +40,9 @@
 			/>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
-			<legend class="contact-us-form__legend contact-us-form__legend--display--block">
+			<legend
+				class="contact-us-form__legend contact-us-form__legend--display--block contact-us-form__legend--space--medium"
+			>
 				Query Type <span>*</span>
 			</legend>
 			<div class="contact-us-form__input-group contact-us-form__input-group--gap--normal">
@@ -72,7 +74,7 @@
 				label-text="Message"
 			/>
 		</fieldset>
-		<fieldset class="contact-us-form__fieldset">
+		<fieldset class="contact-us-form__fieldset contact-us-form__fieldset--space--medium">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
 				Service Agreement
 			</legend>
@@ -94,6 +96,9 @@
 		padding: 24rem;
 		margin: 32rem 16rem;
 		background: var(--color-white);
+		display: flex;
+		flex-direction: column;
+		row-gap: 24rem;
 	}
 
 	.contact-us-form__title {
@@ -103,13 +108,17 @@
 		line-height: 100%;
 		letter-spacing: -0.03em;
 		color: var(--color-grey-900);
-		margin-bottom: 32rem;
+		margin-bottom: 8rem;
 	}
 
 	.contact-us-form__fieldset {
 		border: none;
 		margin: unset;
 		padding: unset;
+	}
+
+	.contact-us-form__fieldset--space--medium {
+		margin: 16rem 0;
 	}
 
 	.contact-us-form__legend {
@@ -137,6 +146,10 @@
 		}
 	}
 
+	.contact-us-form__legend--space--medium {
+		margin-bottom: 16rem;
+	}
+
 	.contact-us-form__input-group {
 		display: flex;
 		flex-direction: column;
@@ -148,18 +161,5 @@
 
 	.contact-us-form__input-group--gap--normal {
 		row-gap: 16rem;
-	}
-
-	.button {
-		border-radius: 8rem;
-		padding: 16rem 0;
-		background: var(--color-green-600);
-		width: 100%;
-		font-family: var(--font-family), sans-serif;
-		font-weight: 700;
-		font-size: 18rem;
-		line-height: 150%;
-		color: var(--color-white);
-		cursor: pointer;
 	}
 </style>
