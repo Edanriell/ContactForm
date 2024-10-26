@@ -106,6 +106,10 @@
 			max-width: 690rem;
 			width: 100%;
 		}
+
+		@media (width >= 1440px) {
+			max-width: 736rem;
+		}
 	}
 
 	.contact-us-form__title {

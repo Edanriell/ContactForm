@@ -218,8 +218,12 @@
 		line-height: 150%;
 		color: var(--color-grey-900);
 
-		@media (width >=768px) {
+		@media (width >= 768px) {
 			height: 132rem;
+		}
+
+		@media (width >= 1440px) {
+			height: 105rem;
 		}
 	}
 
