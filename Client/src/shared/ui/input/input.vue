@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+	import gsap from "gsap";
+
 	type InputProps = {
 		labelText: string;
 		labelFor: string;
@@ -8,18 +10,74 @@
 	};
 
 	const { labelText, labelFor, inputName, inputId, inputType = "text" } = defineProps<InputProps>();
+
+	const handleInputMouseEnter = (element: EventTarget | null) => {
+		gsap.to(element, { borderColor: "#0c7d69", duration: 0.25, ease: "power2.out" });
+	};
+
+	const handleInputMouseLeave = (element: EventTarget | null) => {
+		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
+	};
+
+	const handleInputFocus = (element: EventTarget | null) => {
+		gsap.to(element, { borderColor: "#0c7d69", duration: 0.25, ease: "power2.out" });
+	};
+
+	const handleInputBlur = (element: EventTarget | null) => {
+		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
+	};
+
+	const handleInputMouseDown = (element: EventTarget | null) => {
+		gsap.to(element, { scale: 0.98, duration: 0.25, ease: "power2.inOut" });
+	};
+
+	const handleInputMouseUp = (element: EventTarget | null) => {
+		gsap.to(element, { scale: 1, duration: 0.2, ease: "power2.inOut" });
+	};
 </script>
 
 <template>
 	<div v-if="inputType === 'text'" class="text-input__field">
 		<label :for="labelFor" class="text-input__label">{{ labelText }} <span>*</span></label>
-		<input :id="inputId" :name="inputName" class="text-input" type="text" />
+		<input
+			:id="inputId"
+			:name="inputName"
+			class="text-input"
+			type="text"
+			@blur="handleInputBlur($event.target)"
+			@focus="handleInputFocus($event.target)"
+			@mousedown="handleInputMouseDown($event.target)"
+			@mouseenter="handleInputMouseEnter($event.target)"
+			@mouseleave="handleInputMouseLeave($event.target)"
+			@mouseup="handleInputMouseUp($event.target)"
+		/>
 	</div>
 	<div v-else-if="inputType === 'email'" class="email-input__field">
 		<label :for="labelFor" class="email-input__label">{{ labelText }} <span>*</span></label>
-		<input :id="inputId" :name="inputName" class="email-input" type="email" />
+		<input
+			:id="inputId"
+			:name="inputName"
+			class="email-input"
+			type="email"
+			@blur="handleInputBlur($event.target)"
+			@focus="handleInputFocus($event.target)"
+			@mousedown="handleInputMouseDown($event.target)"
+			@mouseenter="handleInputMouseEnter($event.target)"
+			@mouseleave="handleInputMouseLeave($event.target)"
+			@mouseup="handleInputMouseUp($event.target)"
+		/>
 	</div>
-	<label v-else-if="inputType === 'radio'" :for="labelFor" class="radio-input__label">
+	<label
+		v-else-if="inputType === 'radio'"
+		:for="labelFor"
+		class="radio-input__label"
+		@blur="handleInputBlur($event.currentTarget)"
+		@focus="handleInputFocus($event.currentTarget)"
+		@mousedown="handleInputMouseDown($event.currentTarget)"
+		@mouseenter="handleInputMouseEnter($event.currentTarget)"
+		@mouseleave="handleInputMouseLeave($event.currentTarget)"
+		@mouseup="handleInputMouseUp($event.currentTarget)"
+	>
 		<input :id="inputId" :name="inputName" class="radio-input" type="radio" />
 		<span class="radio-input__radio-mark"></span>
 		<span class="radio-input__label-name">{{ labelText }}</span>
@@ -33,6 +91,12 @@
 			class="textarea"
 			spellcheck="true"
 			wrap="soft"
+			@blur="handleInputBlur($event.target)"
+			@focus="handleInputFocus($event.target)"
+			@mousedown="handleInputMouseDown($event.target)"
+			@mouseenter="handleInputMouseEnter($event.target)"
+			@mouseleave="handleInputMouseLeave($event.target)"
+			@mouseup="handleInputMouseUp($event.target)"
 		></textarea>
 	</div>
 	<label v-else-if="inputType === 'checkbox'" :for="labelFor" class="checkbox-input__label">
