@@ -1,10 +1,52 @@
 <script lang="ts" setup>
+	import { z } from "zod";
+	import { useField, useForm } from "vee-validate";
+	import { toTypedSchema } from "@vee-validate/zod";
+
 	import { Input } from "@shared/ui/input";
 	import { Button } from "@shared/ui/button";
+
+	const contactUsFormSchema = z.object({
+		firstName: z.string().min(1, "This field is required"),
+		lastName: z.string().min(1, "This field is required"),
+		emailAddress: z
+			.string()
+			.email("Please enter a valid email address")
+			.min(1, "This field is required"),
+		queryType: z.string().min(1, "Please select a query type"),
+		message: z.string().min(1, "This field is required"),
+		serviceAgreement: z
+			.string()
+			.refine((val) => val, "To submit this form, please consent to being contacted")
+	});
+
+	const { handleSubmit } = useForm({
+		validationSchema: toTypedSchema(contactUsFormSchema),
+		initialValues: {
+			firstName: "",
+			lastName: "",
+			emailAddress: "",
+			queryType: "",
+			message: "",
+			serviceAgreement: ""
+		}
+	});
+
+	const { value: firstName, errorMessage: firstNameError } = useField("firstName");
+	const { value: lastName, errorMessage: lastNameError } = useField("lastName");
+	const { value: emailAddress, errorMessage: emailAddressError } = useField("emailAddress");
+	const { value: queryType, errorMessage: queryTypeError } = useField("queryType");
+	const { value: message, errorMessage: messageError } = useField("message");
+	const { value: serviceAgreement, errorMessage: serviceAgreementError } =
+		useField("serviceAgreement");
+
+	const onContactUsFormSubmit = handleSubmit((values) => {
+		console.log("Form submitted with values: ", values);
+	});
 </script>
 
 <template>
-	<form class="contact-us-form">
+	<form class="contact-us-form" @submit.prevent="onContactUsFormSubmit">
 		<h2 class="contact-us-form__title">Contact Us</h2>
 		<fieldset class="contact-us-form__fieldset">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
@@ -12,19 +54,24 @@
 			</legend>
 			<div class="contact-us-form__input-group contact-us-form__input-group--gap--large">
 				<Input
+					v-model="firstName as string"
 					input-id="first-name"
 					input-name="first-name"
 					input-type="text"
 					label-for="first-name"
 					label-text="First Name"
 				/>
+				<span v-if="firstNameError">{{ firstNameError }}</span>
+
 				<Input
+					v-model="lastName as string"
 					input-id="last-name"
 					input-name="last-name"
 					input-type="text"
 					label-for="last-name"
 					label-text="Last Name"
 				/>
+				<span v-if="lastNameError">{{ lastNameError }}</span>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
@@ -32,12 +79,14 @@
 				Email Address
 			</legend>
 			<Input
+				v-model="emailAddress as string"
 				input-id="email-address"
 				input-name="email-address"
 				input-type="email"
 				label-for="email-address"
 				label-text="Email Address"
 			/>
+			<span v-if="emailAddressError">{{ emailAddressError }}</span>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
 			<legend
@@ -47,19 +96,24 @@
 			</legend>
 			<div class="contact-us-form__input-group contact-us-form__input-group--gap--normal">
 				<Input
+					v-model="queryType as string"
 					input-id="general-enquiry"
 					input-name="query-type"
 					input-type="radio"
-					label-for="query-type"
+					label-for="general-enquiry"
 					label-text="General Enquiry"
+					value="General Enquiry"
 				/>
 				<Input
+					v-model="queryType as string"
 					input-id="support-request"
 					input-name="query-type"
 					input-type="radio"
-					label-for="query-type"
+					label-for="support-request"
 					label-text="Support Request"
+					value="Support Request"
 				/>
+				<span v-if="queryTypeError">{{ queryTypeError }}</span>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
@@ -67,24 +121,29 @@
 				Message Text
 			</legend>
 			<Input
+				v-model="message as string"
 				input-id="message"
 				input-name="message"
 				input-type="textarea"
 				label-for="message"
 				label-text="Message"
 			/>
+			<span v-if="messageError">{{ messageError }}</span>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset contact-us-form__fieldset--space--medium">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
 				Service Agreement
 			</legend>
 			<Input
+				v-model="serviceAgreement as string"
 				input-id="service-agreement"
 				input-name="service-agreement"
 				input-type="checkbox"
 				label-for="service-agreement"
 				label-text="I consent to being contacted by the team"
+				value="true"
 			/>
+			<span v-if="serviceAgreementError">{{ serviceAgreementError }}</span>
 		</fieldset>
 		<Button button-text="Submit" />
 	</form>
