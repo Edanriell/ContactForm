@@ -1,27 +1,14 @@
 <script lang="ts" setup>
-	import { z } from "zod";
 	import { useField, useForm } from "vee-validate";
 	import { toTypedSchema } from "@vee-validate/zod";
 
 	import { Input } from "@shared/ui/input";
 	import { Button } from "@shared/ui/button";
 
-	const contactUsFormSchema = z.object({
-		firstName: z.string().min(1, "This field is required"),
-		lastName: z.string().min(1, "This field is required"),
-		emailAddress: z
-			.string()
-			.email("Please enter a valid email address")
-			.min(1, "This field is required"),
-		queryType: z.string().min(1, "Please select a query type"),
-		message: z.string().min(1, "This field is required"),
-		serviceAgreement: z
-			.string()
-			.refine((val) => val, "To submit this form, please consent to being contacted")
-	});
+	import { contactUsFormValidationSchema } from "../model";
 
 	const { handleSubmit } = useForm({
-		validationSchema: toTypedSchema(contactUsFormSchema),
+		validationSchema: toTypedSchema(contactUsFormValidationSchema),
 		initialValues: {
 			firstName: "",
 			lastName: "",
@@ -53,40 +40,51 @@
 				First&Last Name
 			</legend>
 			<div class="contact-us-form__input-group contact-us-form__input-group--gap--large">
-				<Input
-					v-model="firstName as string"
-					input-id="first-name"
-					input-name="first-name"
-					input-type="text"
-					label-for="first-name"
-					label-text="First Name"
-				/>
-				<span v-if="firstNameError">{{ firstNameError }}</span>
-
-				<Input
-					v-model="lastName as string"
-					input-id="last-name"
-					input-name="last-name"
-					input-type="text"
-					label-for="last-name"
-					label-text="Last Name"
-				/>
-				<span v-if="lastNameError">{{ lastNameError }}</span>
+				<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
+					<Input
+						v-model="firstName as string"
+						input-id="first-name"
+						input-name="first-name"
+						input-type="text"
+						label-for="first-name"
+						label-text="First Name"
+					/>
+					<p v-if="firstNameError" class="contact-us-form__input-validation-error">
+						{{ firstNameError }}
+					</p>
+				</div>
+				<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
+					<Input
+						v-model="lastName as string"
+						input-id="last-name"
+						input-name="last-name"
+						input-type="text"
+						label-for="last-name"
+						label-text="Last Name"
+					/>
+					<p v-if="lastNameError" class="contact-us-form__input-validation-error">
+						{{ lastNameError }}
+					</p>
+				</div>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
 				Email Address
 			</legend>
-			<Input
-				v-model="emailAddress as string"
-				input-id="email-address"
-				input-name="email-address"
-				input-type="email"
-				label-for="email-address"
-				label-text="Email Address"
-			/>
-			<span v-if="emailAddressError">{{ emailAddressError }}</span>
+			<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
+				<Input
+					v-model="emailAddress as string"
+					input-id="email-address"
+					input-name="email-address"
+					input-type="email"
+					label-for="email-address"
+					label-text="Email Address"
+				/>
+				<p v-if="emailAddressError" class="contact-us-form__input-validation-error">
+					{{ emailAddressError }}
+				</p>
+			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
 			<legend
@@ -94,56 +92,68 @@
 			>
 				Query Type <span>*</span>
 			</legend>
-			<div class="contact-us-form__input-group contact-us-form__input-group--gap--normal">
-				<Input
-					v-model="queryType as string"
-					input-id="general-enquiry"
-					input-name="query-type"
-					input-type="radio"
-					label-for="general-enquiry"
-					label-text="General Enquiry"
-					value="General Enquiry"
-				/>
-				<Input
-					v-model="queryType as string"
-					input-id="support-request"
-					input-name="query-type"
-					input-type="radio"
-					label-for="support-request"
-					label-text="Support Request"
-					value="Support Request"
-				/>
-				<span v-if="queryTypeError">{{ queryTypeError }}</span>
+			<div class="contact-us-form__input-radio-group contact-us-form__input-group--gap--normal">
+				<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--row">
+					<Input
+						v-model="queryType as string"
+						input-id="general-enquiry"
+						input-name="query-type"
+						input-type="radio"
+						label-for="general-enquiry"
+						label-text="General Enquiry"
+						value="General Enquiry"
+					/>
+					<Input
+						v-model="queryType as string"
+						input-id="support-request"
+						input-name="query-type"
+						input-type="radio"
+						label-for="support-request"
+						label-text="Support Request"
+						value="Support Request"
+					/>
+				</div>
+				<p v-if="queryTypeError" class="contact-us-form__input-validation-error">
+					{{ queryTypeError }}
+				</p>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
 				Message Text
 			</legend>
-			<Input
-				v-model="message as string"
-				input-id="message"
-				input-name="message"
-				input-type="textarea"
-				label-for="message"
-				label-text="Message"
-			/>
-			<span v-if="messageError">{{ messageError }}</span>
+			<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
+				<Input
+					v-model="message as string"
+					input-id="message"
+					input-name="message"
+					input-type="textarea"
+					label-for="message"
+					label-text="Message"
+				/>
+				<p v-if="messageError" class="contact-us-form__input-validation-error">
+					{{ messageError }}
+				</p>
+			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset contact-us-form__fieldset--space--medium">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
 				Service Agreement
 			</legend>
-			<Input
-				v-model="serviceAgreement as string"
-				input-id="service-agreement"
-				input-name="service-agreement"
-				input-type="checkbox"
-				label-for="service-agreement"
-				label-text="I consent to being contacted by the team"
-				value="true"
-			/>
-			<span v-if="serviceAgreementError">{{ serviceAgreementError }}</span>
+			<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
+				<Input
+					v-model="serviceAgreement as string"
+					input-id="service-agreement"
+					input-name="service-agreement"
+					input-type="checkbox"
+					label-for="service-agreement"
+					label-text="I consent to being contacted by the team"
+					value="true"
+				/>
+				<p v-if="serviceAgreementError" class="contact-us-form__input-validation-error">
+					{{ serviceAgreementError }}
+				</p>
+			</div>
 		</fieldset>
 		<Button button-text="Submit" />
 	</form>
@@ -229,6 +239,11 @@
 		}
 	}
 
+	.contact-us-form__input-radio-group {
+		display: flex;
+		flex-direction: column;
+	}
+
 	.contact-us-form__input-group--gap--large {
 		row-gap: 24rem;
 
@@ -243,5 +258,33 @@
 		@media (width >= 768px) {
 			column-gap: 16rem;
 		}
+	}
+
+	.contact-us-form__input-wrapper {
+		display: flex;
+		width: 100%;
+	}
+
+	.contact-us-form__input-wrapper--type--column {
+		flex-direction: column;
+		row-gap: 8rem;
+	}
+
+	.contact-us-form__input-wrapper--type--row {
+		flex-direction: column;
+		row-gap: 16rem;
+
+		@media (width >= 768px) {
+			flex-direction: row;
+			column-gap: 16rem;
+		}
+	}
+
+	.contact-us-form__input-validation-error {
+		font-family: var(--font-family), sans-serif;
+		font-weight: 400;
+		font-size: 16rem;
+		line-height: 150%;
+		color: var(--color-red);
 	}
 </style>
