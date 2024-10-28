@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 	import gsap from "gsap";
+	import { ref, watch } from "vue";
 
 	type InputProps = {
 		modelValue: string;
@@ -8,6 +9,7 @@
 		inputName: string;
 		inputId: string;
 		inputType: "text" | "email" | "radio" | "textarea" | "checkbox";
+		isValid?: boolean;
 		value?: string;
 	};
 
@@ -18,8 +20,13 @@
 		inputName,
 		inputId,
 		inputType = "text",
+		isValid = true,
 		value = ""
 	} = defineProps<InputProps>();
+
+	const textInputRef = ref<HTMLInputElement>();
+	const emailInputRef = ref<HTMLInputElement>();
+	const textareaRef = ref<HTMLTextAreaElement>();
 
 	const emit = defineEmits(["update:modelValue"]);
 
@@ -29,18 +36,22 @@
 	};
 
 	const handleInputMouseEnter = (element: EventTarget | null) => {
+		if (!isValid) return;
 		gsap.to(element, { borderColor: "#0c7d69", duration: 0.25, ease: "power2.out" });
 	};
 
 	const handleInputMouseLeave = (element: EventTarget | null) => {
+		if (!isValid) return;
 		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
 	};
 
 	const handleInputFocus = (element: EventTarget | null) => {
+		if (!isValid) return;
 		gsap.to(element, { borderColor: "#0c7d69", duration: 0.25, ease: "power2.out" });
 	};
 
 	const handleInputBlur = (element: EventTarget | null) => {
+		if (!isValid) return;
 		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
 	};
 
@@ -51,6 +62,37 @@
 	const handleInputMouseUp = (element: EventTarget | null) => {
 		gsap.to(element, { scale: 1, duration: 0.2, ease: "power2.inOut" });
 	};
+
+	const applyInvalidInputStyles = (element: EventTarget | null) => {
+		gsap.to(element, { borderColor: "#d73c3c", duration: 0.2, ease: "power2.out" });
+	};
+
+	const applyValidInputStyles = (element: EventTarget | null) => {
+		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
+	};
+
+	watch(
+		() => isValid,
+		(newValue) => {
+			if (!newValue) {
+				if (textInputRef.value) {
+					applyInvalidInputStyles(textInputRef.value);
+				} else if (emailInputRef.value) {
+					applyInvalidInputStyles(emailInputRef.value);
+				} else if (textareaRef.value) {
+					applyInvalidInputStyles(textareaRef.value);
+				}
+			} else {
+				if (textInputRef.value) {
+					applyValidInputStyles(textInputRef.value);
+				} else if (emailInputRef.value) {
+					applyValidInputStyles(emailInputRef.value);
+				} else if (textareaRef.value) {
+					applyValidInputStyles(textareaRef.value);
+				}
+			}
+		}
+	);
 </script>
 
 <template>
@@ -58,6 +100,7 @@
 		<label :for="labelFor" class="text-input__label">{{ labelText }} <span>*</span></label>
 		<input
 			:id="inputId"
+			ref="textInputRef"
 			:name="inputName"
 			:value="modelValue"
 			class="text-input"
@@ -75,6 +118,7 @@
 		<label :for="labelFor" class="email-input__label">{{ labelText }} <span>*</span></label>
 		<input
 			:id="inputId"
+			ref="emailInputRef"
 			:name="inputName"
 			:value="modelValue"
 			class="email-input"
@@ -115,6 +159,7 @@
 		<label :for="labelFor" class="textarea__label">{{ labelText }} <span>*</span></label>
 		<textarea
 			:id="inputId"
+			ref="textareaRef"
 			:name="inputName"
 			:value="modelValue"
 			autocomplete="off"
