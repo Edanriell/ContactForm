@@ -88,7 +88,17 @@
 			@mouseup="handleInputMouseUp($event.target)"
 		/>
 	</div>
-	<label v-else-if="inputType === 'radio'" :for="labelFor" class="radio-input__label">
+	<label
+		v-else-if="inputType === 'radio'"
+		:for="labelFor"
+		class="radio-input__label"
+		@blur="handleInputBlur($event.currentTarget)"
+		@focus="handleInputFocus($event.currentTarget)"
+		@mousedown="handleInputMouseDown($event.currentTarget)"
+		@mouseenter="handleInputMouseEnter($event.currentTarget)"
+		@mouseleave="handleInputMouseLeave($event.currentTarget)"
+		@mouseup="handleInputMouseUp($event.currentTarget)"
+	>
 		<input
 			:id="inputId"
 			:name="inputName"
@@ -96,6 +106,7 @@
 			class="radio-input"
 			type="radio"
 			@change="updateValue"
+			@input="updateValue"
 		/>
 		<span class="radio-input__radio-mark"></span>
 		<span class="radio-input__label-name">{{ labelText }}</span>
