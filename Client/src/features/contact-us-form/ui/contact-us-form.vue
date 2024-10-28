@@ -43,6 +43,7 @@
 				<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
 					<Input
 						v-model="firstName as string"
+						:is-valid="!firstNameError"
 						input-id="first-name"
 						input-name="first-name"
 						input-type="text"
@@ -56,6 +57,7 @@
 				<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
 					<Input
 						v-model="lastName as string"
+						:is-valid="!lastNameError"
 						input-id="last-name"
 						input-name="last-name"
 						input-type="text"
@@ -75,6 +77,7 @@
 			<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
 				<Input
 					v-model="emailAddress as string"
+					:is-valid="!emailAddressError"
 					input-id="email-address"
 					input-name="email-address"
 					input-type="email"
@@ -125,6 +128,7 @@
 			<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
 				<Input
 					v-model="message as string"
+					:is-valid="!messageError"
 					input-id="message"
 					input-name="message"
 					input-type="textarea"
