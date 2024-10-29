@@ -149,6 +149,7 @@
 			<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
 				<Input
 					v-model="serviceAgreement as string"
+					:is-selected="serviceAgreement === 'true'"
 					input-id="service-agreement"
 					input-name="service-agreement"
 					input-type="checkbox"
