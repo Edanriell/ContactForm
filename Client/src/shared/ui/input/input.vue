@@ -10,6 +10,7 @@
 		inputId: string;
 		inputType: "text" | "email" | "radio" | "textarea" | "checkbox";
 		isValid?: boolean;
+		isSelected?: boolean;
 		value?: string;
 	};
 
@@ -21,12 +22,15 @@
 		inputId,
 		inputType = "text",
 		isValid = true,
+		isSelected = false,
 		value = ""
 	} = defineProps<InputProps>();
 
 	const textInputRef = ref<HTMLInputElement>();
 	const emailInputRef = ref<HTMLInputElement>();
 	const textareaRef = ref<HTMLTextAreaElement>();
+	const radioInputLabelRef = ref<HTMLLabelElement>();
+	const radioInputRadioMark = ref<HTMLSpanElement>();
 
 	const emit = defineEmits(["update:modelValue"]);
 
@@ -36,22 +40,22 @@
 	};
 
 	const handleInputMouseEnter = (element: EventTarget | null) => {
-		if (!isValid) return;
+		if (!isValid || isSelected) return;
 		gsap.to(element, { borderColor: "#0c7d69", duration: 0.25, ease: "power2.out" });
 	};
 
 	const handleInputMouseLeave = (element: EventTarget | null) => {
-		if (!isValid) return;
+		if (!isValid || isSelected) return;
 		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
 	};
 
 	const handleInputFocus = (element: EventTarget | null) => {
-		if (!isValid) return;
+		if (!isValid || isSelected) return;
 		gsap.to(element, { borderColor: "#0c7d69", duration: 0.25, ease: "power2.out" });
 	};
 
 	const handleInputBlur = (element: EventTarget | null) => {
-		if (!isValid) return;
+		if (!isValid || isSelected) return;
 		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
 	};
 
@@ -69,6 +73,44 @@
 
 	const applyValidInputStyles = (element: EventTarget | null) => {
 		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
+	};
+
+	const applyIsSelectedRadioInputLabelStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			backgroundColor: "#e0f1e8",
+			borderColor: "#0c7d69",
+			duration: 0.25,
+			ease: "power2.out"
+		});
+	};
+
+	const applyNotSelectedRadioInputLabelStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			backgroundColor: "transparent",
+			borderColor: "#86a2a5",
+			duration: 0.2,
+			ease: "power2.out"
+		});
+	};
+
+	const applyIsSelectedRadioInputRadioMarkStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			"--radio-mark-opacity": 1,
+			"--radio-mark-scale": 1,
+			borderColor: "#0c7d69",
+			duration: 0.25,
+			ease: "power2.out"
+		});
+	};
+
+	const applyNotSelectedRadioInputRadioMarkStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			"--radio-mark-opacity": 0,
+			"--radio-mark-scale": 0.6,
+			borderColor: "#86a2a5",
+			duration: 0.2,
+			ease: "power2.out"
+		});
 	};
 
 	watch(
@@ -89,6 +131,23 @@
 					applyValidInputStyles(emailInputRef.value);
 				} else if (textareaRef.value) {
 					applyValidInputStyles(textareaRef.value);
+				}
+			}
+		}
+	);
+
+	watch(
+		() => isSelected,
+		(newValue) => {
+			if (newValue) {
+				if (radioInputLabelRef.value && radioInputRadioMark.value) {
+					applyIsSelectedRadioInputLabelStyles(radioInputLabelRef.value);
+					applyIsSelectedRadioInputRadioMarkStyles(radioInputRadioMark.value);
+				}
+			} else {
+				if (radioInputLabelRef.value && radioInputRadioMark.value) {
+					applyNotSelectedRadioInputLabelStyles(radioInputLabelRef.value);
+					applyNotSelectedRadioInputRadioMarkStyles(radioInputRadioMark.value);
 				}
 			}
 		}
@@ -134,6 +193,7 @@
 	</div>
 	<label
 		v-else-if="inputType === 'radio'"
+		ref="radioInputLabelRef"
 		:for="labelFor"
 		class="radio-input__label"
 		@blur="handleInputBlur($event.currentTarget)"
@@ -152,7 +212,7 @@
 			@change="updateValue"
 			@input="updateValue"
 		/>
-		<span class="radio-input__radio-mark"></span>
+		<span ref="radioInputRadioMark" class="radio-input__radio-mark"></span>
 		<span class="radio-input__label-name">{{ labelText }}</span>
 	</label>
 	<div v-else-if="inputType === 'textarea'" class="textarea__field">
@@ -293,6 +353,9 @@
 	}
 
 	.radio-input__radio-mark {
+		--radio-mark-opacity: 0;
+		--radio-mark-scale: 0.6;
+
 		width: 20rem;
 		height: 20rem;
 		border-radius: 50%;
@@ -310,14 +373,12 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%) scale(var(--radio-mark-scale));
 		width: 10rem;
 		height: 10rem;
 		border-radius: 50%;
 		background: var(--color-green-600);
-		opacity: 0;
-		will-change: opacity;
-		transition: opacity 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+		opacity: var(--radio-mark-opacity);
 	}
 
 	.radio-input__label-name {

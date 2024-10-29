@@ -99,6 +99,7 @@
 				<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--row">
 					<Input
 						v-model="queryType as string"
+						:is-selected="queryType === 'General Enquiry'"
 						input-id="general-enquiry"
 						input-name="query-type"
 						input-type="radio"
@@ -108,6 +109,7 @@
 					/>
 					<Input
 						v-model="queryType as string"
+						:is-selected="queryType === 'Support Request'"
 						input-id="support-request"
 						input-name="query-type"
 						input-type="radio"
