@@ -10,6 +10,7 @@
 		inputId: string;
 		inputType: "text" | "email" | "radio" | "textarea" | "checkbox";
 		isValid?: boolean;
+		isSelected?: boolean;
 		value?: string;
 	};
 
@@ -21,12 +22,16 @@
 		inputId,
 		inputType = "text",
 		isValid = true,
+		isSelected = false,
 		value = ""
 	} = defineProps<InputProps>();
 
 	const textInputRef = ref<HTMLInputElement>();
 	const emailInputRef = ref<HTMLInputElement>();
 	const textareaRef = ref<HTMLTextAreaElement>();
+	const radioInputLabelRef = ref<HTMLLabelElement>();
+	const radioInputRadioMarkRef = ref<HTMLSpanElement>();
+	const checkboxInputCheckMarkRef = ref<HTMLSpanElement>();
 
 	const emit = defineEmits(["update:modelValue"]);
 
@@ -36,31 +41,31 @@
 	};
 
 	const handleInputMouseEnter = (element: EventTarget | null) => {
-		if (!isValid) return;
-		gsap.to(element, { borderColor: "#0c7d69", duration: 0.25, ease: "power2.out" });
+		if (!isValid || isSelected) return;
+		gsap.to(element, { borderColor: "#0c7d69", duration: 0.2, ease: "power2.out" });
 	};
 
 	const handleInputMouseLeave = (element: EventTarget | null) => {
-		if (!isValid) return;
-		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
+		if (!isValid || isSelected) return;
+		gsap.to(element, { borderColor: "#86a2a5", duration: 0.15, ease: "power2.out" });
 	};
 
 	const handleInputFocus = (element: EventTarget | null) => {
-		if (!isValid) return;
-		gsap.to(element, { borderColor: "#0c7d69", duration: 0.25, ease: "power2.out" });
+		if (!isValid || isSelected) return;
+		gsap.to(element, { borderColor: "#0c7d69", duration: 0.2, ease: "power2.out" });
 	};
 
 	const handleInputBlur = (element: EventTarget | null) => {
-		if (!isValid) return;
-		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
+		if (!isValid || isSelected) return;
+		gsap.to(element, { borderColor: "#86a2a5", duration: 0.15, ease: "power2.out" });
 	};
 
 	const handleInputMouseDown = (element: EventTarget | null) => {
-		gsap.to(element, { scale: 0.98, duration: 0.25, ease: "power2.inOut" });
+		gsap.to(element, { scale: 0.98, duration: 0.2, ease: "power2.inOut" });
 	};
 
 	const handleInputMouseUp = (element: EventTarget | null) => {
-		gsap.to(element, { scale: 1, duration: 0.2, ease: "power2.inOut" });
+		gsap.to(element, { scale: 1, duration: 0.15, ease: "power2.inOut" });
 	};
 
 	const applyInvalidInputStyles = (element: EventTarget | null) => {
@@ -68,7 +73,69 @@
 	};
 
 	const applyValidInputStyles = (element: EventTarget | null) => {
-		gsap.to(element, { borderColor: "#86a2a5", duration: 0.2, ease: "power2.out" });
+		gsap.to(element, { borderColor: "#86a2a5", duration: 0.15, ease: "power2.out" });
+	};
+
+	const applyIsSelectedRadioInputLabelStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			backgroundColor: "#e0f1e8",
+			borderColor: "#0c7d69",
+			duration: 0.2,
+			ease: "power2.out"
+		});
+	};
+
+	const applyNotSelectedRadioInputLabelStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			backgroundColor: "#fff",
+			borderColor: "#86a2a5",
+			duration: 0.15,
+			ease: "power2.out"
+		});
+	};
+
+	const applyIsSelectedRadioInputRadioMarkStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			"--radio-mark-opacity": 1,
+			"--radio-mark-scale": 1,
+			borderColor: "#0c7d69",
+			duration: 0.2,
+			ease: "power2.out"
+		});
+	};
+
+	const applyNotSelectedRadioInputRadioMarkStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			"--radio-mark-opacity": 0,
+			"--radio-mark-scale": 0.6,
+			borderColor: "#86a2a5",
+			duration: 0.15,
+			ease: "power2.out"
+		});
+	};
+
+	const applyIsSelectedCheckboxInputCheckMarkStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			"--check-mark-opacity": 1,
+			"--check-mark-height": "10rem",
+			"--check-mark-width": "7rem",
+			backgroundColor: "#0c7d69",
+			borderColor: "#0c7d69",
+			duration: 0.2,
+			ease: "power2.out"
+		});
+	};
+
+	const applyNotSelectedCheckboxInputCheckMarkStyles = (element: EventTarget | null) => {
+		gsap.to(element, {
+			"--check-mark-opacity": 0,
+			"--check-mark-height": 0,
+			"--check-mark-width": 0,
+			backgroundColor: "#fff",
+			borderColor: "#86a2a5",
+			duration: 0.15,
+			ease: "power2.out"
+		});
 	};
 
 	watch(
@@ -89,6 +156,27 @@
 					applyValidInputStyles(emailInputRef.value);
 				} else if (textareaRef.value) {
 					applyValidInputStyles(textareaRef.value);
+				}
+			}
+		}
+	);
+
+	watch(
+		() => isSelected,
+		(newValue) => {
+			if (newValue) {
+				if (radioInputLabelRef.value && radioInputRadioMarkRef.value) {
+					applyIsSelectedRadioInputLabelStyles(radioInputLabelRef.value);
+					applyIsSelectedRadioInputRadioMarkStyles(radioInputRadioMarkRef.value);
+				} else if (checkboxInputCheckMarkRef.value) {
+					applyIsSelectedCheckboxInputCheckMarkStyles(checkboxInputCheckMarkRef.value);
+				}
+			} else {
+				if (radioInputLabelRef.value && radioInputRadioMarkRef.value) {
+					applyNotSelectedRadioInputLabelStyles(radioInputLabelRef.value);
+					applyNotSelectedRadioInputRadioMarkStyles(radioInputRadioMarkRef.value);
+				} else if (checkboxInputCheckMarkRef.value) {
+					applyNotSelectedCheckboxInputCheckMarkStyles(checkboxInputCheckMarkRef.value);
 				}
 			}
 		}
@@ -134,6 +222,7 @@
 	</div>
 	<label
 		v-else-if="inputType === 'radio'"
+		ref="radioInputLabelRef"
 		:for="labelFor"
 		class="radio-input__label"
 		@blur="handleInputBlur($event.currentTarget)"
@@ -152,7 +241,7 @@
 			@change="updateValue"
 			@input="updateValue"
 		/>
-		<span class="radio-input__radio-mark"></span>
+		<span ref="radioInputRadioMarkRef" class="radio-input__radio-mark"></span>
 		<span class="radio-input__label-name">{{ labelText }}</span>
 	</label>
 	<div v-else-if="inputType === 'textarea'" class="textarea__field">
@@ -175,7 +264,16 @@
 			@mouseup="handleInputMouseUp($event.target)"
 		></textarea>
 	</div>
-	<label v-else-if="inputType === 'checkbox'" :for="labelFor" class="checkbox-input__label">
+	<label
+		v-else-if="inputType === 'checkbox'"
+		:for="labelFor"
+		class="checkbox-input__label"
+		@blur="handleInputBlur(checkboxInputCheckMarkRef!)"
+		@focus="handleInputFocus(checkboxInputCheckMarkRef!)"
+		@input="updateValue"
+		@mouseenter="handleInputMouseEnter(checkboxInputCheckMarkRef!)"
+		@mouseleave="handleInputMouseLeave(checkboxInputCheckMarkRef!)"
+	>
 		<input
 			:id="inputId"
 			:name="inputName"
@@ -184,7 +282,7 @@
 			type="checkbox"
 			@change="updateValue"
 		/>
-		<span class="checkbox-input__check-mark"></span>
+		<span ref="checkboxInputCheckMarkRef" class="checkbox-input__check-mark"></span>
 		<span class="checkbox-input__label-name">{{ labelText }} <span>*</span></span>
 	</label>
 </template>
@@ -293,6 +391,9 @@
 	}
 
 	.radio-input__radio-mark {
+		--radio-mark-opacity: 0;
+		--radio-mark-scale: 0.6;
+
 		width: 20rem;
 		height: 20rem;
 		border-radius: 50%;
@@ -310,14 +411,12 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%) scale(var(--radio-mark-scale));
 		width: 10rem;
 		height: 10rem;
 		border-radius: 50%;
 		background: var(--color-green-600);
-		opacity: 0;
-		will-change: opacity;
-		transition: opacity 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+		opacity: var(--radio-mark-opacity);
 	}
 
 	.radio-input__label-name {
@@ -386,6 +485,7 @@
 		flex-direction: row;
 		align-items: center;
 		column-gap: 19rem;
+		cursor: pointer;
 	}
 
 	.checkbox-input__label-name {
@@ -405,10 +505,30 @@
 	}
 
 	.checkbox-input__check-mark {
+		--check-mark-opacity: 0;
+		--check-mark-width: 0;
+		--check-mark-height: 0;
+
 		display: block;
 		width: 18rem;
 		height: 18rem;
 		border: 1rem solid var(--color-grey-500);
+		border-radius: 2rem;
+		position: relative;
+	}
+
+	.checkbox-input__check-mark::after {
+		opacity: var(--check-mark-opacity);
+		height: var(--check-mark-height);
+		width: var(--check-mark-width);
+		transform-origin: left top;
+		border-right: 2rem solid #fff;
+		border-top: 2rem solid #fff;
+		content: "";
+		left: 50%;
+		top: 40%;
+		position: absolute;
+		transform: scaleX(-1) rotate(135deg) translate(-50%, -50%);
 		border-radius: 2rem;
 	}
 </style>
