@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-	import { ref } from "vue";
 	import gsap from "gsap";
 
 	type ButtonProps = {
@@ -7,8 +6,6 @@
 	};
 
 	const { buttonText } = defineProps<ButtonProps>();
-
-	const buttonRef = ref<HTMLButtonElement>();
 
 	const handleButtonMouseEnter = (element: EventTarget | null) => {
 		gsap.to(element, { scale: 1.05, duration: 0.2, ease: "power2.out" });
@@ -44,7 +41,6 @@
 
 <template>
 	<button
-		ref="buttonRef"
 		class="button"
 		type="submit"
 		@mousedown="handleButtonMouseDown($event.target)"
