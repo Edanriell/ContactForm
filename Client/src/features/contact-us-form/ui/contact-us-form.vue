@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 	import { useField, useForm } from "vee-validate";
 	import { toTypedSchema } from "@vee-validate/zod";
+	import gsap from "gsap";
 
 	import { Input } from "@shared/ui/input";
 	import { Button } from "@shared/ui/button";
@@ -30,6 +31,35 @@
 	const onContactUsFormSubmit = handleSubmit((values) => {
 		console.log("Form submitted with values: ", values);
 	});
+
+	const displayErrorMessage = (element: Element, done: () => void) => {
+		gsap.set(element, {
+			opacity: 0,
+			y: -10
+		});
+
+		gsap.to(element, {
+			opacity: 1,
+			y: 0,
+			duration: 0.2,
+			ease: "power2.inOut",
+			onComplete: () => {
+				done();
+			}
+		});
+	};
+
+	const hideErrorMessage = (element: Element, done: () => void) => {
+		gsap.to(element, {
+			opacity: 0,
+			y: 10,
+			duration: 0.15,
+			ease: "power2.inOut",
+			onComplete: () => {
+				done();
+			}
+		});
+	};
 </script>
 
 <template>
@@ -50,9 +80,14 @@
 						label-for="first-name"
 						label-text="First Name"
 					/>
-					<p v-if="firstNameError" class="contact-us-form__input-validation-error">
-						{{ firstNameError }}
-					</p>
+					<Transition
+						@enter="(el, done) => displayErrorMessage(el, done)"
+						@leave="(el, done) => hideErrorMessage(el, done)"
+					>
+						<p v-if="firstNameError" class="contact-us-form__input-validation-error">
+							{{ firstNameError }}
+						</p>
+					</Transition>
 				</div>
 				<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
 					<Input
@@ -64,9 +99,14 @@
 						label-for="last-name"
 						label-text="Last Name"
 					/>
-					<p v-if="lastNameError" class="contact-us-form__input-validation-error">
-						{{ lastNameError }}
-					</p>
+					<Transition
+						@enter="(el, done) => displayErrorMessage(el, done)"
+						@leave="(el, done) => hideErrorMessage(el, done)"
+					>
+						<p v-if="lastNameError" class="contact-us-form__input-validation-error">
+							{{ lastNameError }}
+						</p>
+					</Transition>
 				</div>
 			</div>
 		</fieldset>
@@ -84,9 +124,14 @@
 					label-for="email-address"
 					label-text="Email Address"
 				/>
-				<p v-if="emailAddressError" class="contact-us-form__input-validation-error">
-					{{ emailAddressError }}
-				</p>
+				<Transition
+					@enter="(el, done) => displayErrorMessage(el, done)"
+					@leave="(el, done) => hideErrorMessage(el, done)"
+				>
+					<p v-if="emailAddressError" class="contact-us-form__input-validation-error">
+						{{ emailAddressError }}
+					</p>
+				</Transition>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
@@ -118,9 +163,14 @@
 						value="Support Request"
 					/>
 				</div>
-				<p v-if="queryTypeError" class="contact-us-form__input-validation-error">
-					{{ queryTypeError }}
-				</p>
+				<Transition
+					@enter="(el, done) => displayErrorMessage(el, done)"
+					@leave="(el, done) => hideErrorMessage(el, done)"
+				>
+					<p v-if="queryTypeError" class="contact-us-form__input-validation-error">
+						{{ queryTypeError }}
+					</p>
+				</Transition>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset">
@@ -137,9 +187,14 @@
 					label-for="message"
 					label-text="Message"
 				/>
-				<p v-if="messageError" class="contact-us-form__input-validation-error">
-					{{ messageError }}
-				</p>
+				<Transition
+					@enter="(el, done) => displayErrorMessage(el, done)"
+					@leave="(el, done) => hideErrorMessage(el, done)"
+				>
+					<p v-if="messageError" class="contact-us-form__input-validation-error">
+						{{ messageError }}
+					</p>
+				</Transition>
 			</div>
 		</fieldset>
 		<fieldset class="contact-us-form__fieldset contact-us-form__fieldset--space--medium">
@@ -157,9 +212,14 @@
 					label-text="I consent to being contacted by the team"
 					value="true"
 				/>
-				<p v-if="serviceAgreementError" class="contact-us-form__input-validation-error">
-					{{ serviceAgreementError }}
-				</p>
+				<Transition
+					@enter="(el, done) => displayErrorMessage(el, done)"
+					@leave="(el, done) => hideErrorMessage(el, done)"
+				>
+					<p v-if="serviceAgreementError" class="contact-us-form__input-validation-error">
+						{{ serviceAgreementError }}
+					</p>
+				</Transition>
 			</div>
 		</fieldset>
 		<Button button-text="Submit" />
