@@ -7,7 +7,12 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Notification {
-    id    Int    @id @default(autoincrement())
-    email String @unique
+model Message {
+    id               Int    @id @default(autoincrement())
+    firstName        String
+    lastName         String
+    emailAddress     String @unique
+    queryType        String
+    message          String
+    serviceAgreement String
 }
