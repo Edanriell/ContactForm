@@ -1,4 +1,5 @@
 import { NestFactory } from "@nestjs/core";
+import { ValidationPipe } from "@nestjs/common";
 import helmet from "helmet";
 import * as compression from "compression";
 import type { NestExpressApplication } from "@nestjs/platform-express";
@@ -12,6 +13,7 @@ const startServer = async () => {
 
 	const configService = app.get(ConfigService);
 
+	app.useGlobalPipes(new ValidationPipe({ transform: true }));
 	app.enableCors(corsOptions);
 	app.use(compression());
 	app.useBodyParser("json", { limit: "50kb" });
