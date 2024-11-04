@@ -47,7 +47,7 @@ export class MessagesService {
 		return messages.map((message: Message) => new MessageDto(message));
 	}
 
-	async createMessage(createMessageDto: CreateMessageRequestDto): Promise<MessageDto> {
+	async createMessage(createMessageDto: CreateMessageRequestDto) {
 		const { firstName, lastName, emailAddress, queryType, message, serviceAgreement } =
 			createMessageDto;
 
@@ -61,6 +61,8 @@ export class MessagesService {
 				serviceAgreement
 			}
 		});
+
+		console.log(newMessage);
 
 		this.logger.log(`Message successfully created with ID ${newMessage.id}.`, MessagesService.name);
 
