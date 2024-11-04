@@ -7,6 +7,7 @@
 	import { Button } from "@shared/ui/button";
 
 	import { contactUsFormValidationSchema } from "../model";
+	import { createMessage } from "@features/contact-us-form/api";
 
 	const { handleSubmit } = useForm({
 		validationSchema: toTypedSchema(contactUsFormValidationSchema),
@@ -28,8 +29,17 @@
 	const { value: serviceAgreement, errorMessage: serviceAgreementError } =
 		useField("serviceAgreement");
 
-	const onContactUsFormSubmit = handleSubmit((values) => {
-		console.log("Form submitted with values: ", values);
+	const onContactUsFormSubmit = handleSubmit(async (values) => {
+		const response = await createMessage({
+			firstName: firstName as unknown as string,
+			lastName: lastName as unknown as string,
+			emailAddress: emailAddress as unknown as string,
+			queryType: queryType as unknown as string,
+			message: message as unknown as string,
+			serviceAgreement: serviceAgreement as unknown as string
+		});
+
+		console.log(response);
 	});
 
 	const displayErrorMessage = (element: Element, done: () => void) => {
