@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Ip, Param, ParseIntPipe, Post } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Ip,
+	Param,
+	ParseIntPipe,
+	Post,
+	ValidationPipe
+} from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
 
 import { MessagesService } from "../services";
@@ -27,9 +37,13 @@ export class MessagesController {
 
 	@Throttle({ short: { ttl: 1000, limit: 1 } })
 	@Post("message")
-	async createMessage(@Body() data: CreateMessageRequestDto, @Ip() ip: string) {
+	async createMessage(
+		@Body(new ValidationPipe())
+		createMessageDto: CreateMessageRequestDto,
+		@Ip() ip: string
+	) {
 		this.logger.log(`Create message request received from IP: ${ip}`, MessagesController.name);
-		return await this.messagesService.createMessage(data);
+		return await this.messagesService.createMessage(createMessageDto);
 	}
 
 	@Throttle({ short: { ttl: 1000, limit: 1 } })

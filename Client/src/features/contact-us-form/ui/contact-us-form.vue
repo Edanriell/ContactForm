@@ -31,12 +31,12 @@
 
 	const onContactUsFormSubmit = handleSubmit(async (values) => {
 		const response = await createMessage({
-			firstName: firstName as unknown as string,
-			lastName: lastName as unknown as string,
-			emailAddress: emailAddress as unknown as string,
-			queryType: queryType as unknown as string,
-			message: message as unknown as string,
-			serviceAgreement: serviceAgreement as unknown as string
+			firstName: firstName.value,
+			lastName: lastName.value,
+			emailAddress: emailAddress.value,
+			queryType: queryType.value,
+			message: message.value,
+			serviceAgreement: serviceAgreement.value
 		});
 
 		console.log(response);
