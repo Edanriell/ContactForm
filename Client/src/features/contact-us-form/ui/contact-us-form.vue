@@ -8,6 +8,7 @@
 
 	import { contactUsFormValidationSchema } from "../model";
 	import { createMessage } from "@features/contact-us-form/api";
+	import { addToast } from "@shared/ui/toast";
 
 	const { handleSubmit } = useForm({
 		validationSchema: toTypedSchema(contactUsFormValidationSchema),
@@ -29,14 +30,16 @@
 	const { value: serviceAgreement, errorMessage: serviceAgreementError } =
 		useField("serviceAgreement");
 
-	const onContactUsFormSubmit = handleSubmit(async (values) => {
+	const onContactUsFormSubmit = handleSubmit(async () => {
+		addToast("This is a success message", "success");
+
 		const response = await createMessage({
-			firstName: firstName.value,
-			lastName: lastName.value,
-			emailAddress: emailAddress.value,
-			queryType: queryType.value,
-			message: message.value,
-			serviceAgreement: serviceAgreement.value
+			firstName: firstName.value as string,
+			lastName: lastName.value as string,
+			emailAddress: emailAddress.value as string,
+			queryType: queryType.value as string,
+			message: message.value as string,
+			serviceAgreement: serviceAgreement.value as string
 		});
 
 		console.log(response);

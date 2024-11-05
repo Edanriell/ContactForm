@@ -20,6 +20,7 @@
 		"@vee-validate/zod": "^4.14.6",
 		"gsap": "^3.12.5",
 		"less": "^4.2.0",
+		"mitt": "^3.0.1",
 		"pinia": "^2.2.4",
 		"sanitize.css": "^13.0.0",
 		"vee-validate": "^4.14.6",
