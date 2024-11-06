@@ -31,7 +31,10 @@
 		useField("serviceAgreement");
 
 	const onContactUsFormSubmit = handleSubmit(async () => {
-		addToast("This is a success message", "success");
+		addToast({
+			title: "Message Sent!",
+			message: "Thanks for completing the form. We’ll be in touch soon!"
+		});
 
 		const response = await createMessage({
 			firstName: firstName.value as string,
