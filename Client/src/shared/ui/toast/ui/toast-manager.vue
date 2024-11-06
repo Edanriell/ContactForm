@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+	import gsap from "gsap";
+
 	import Toast from "./toast.vue";
 
 	import { toasts } from "../model";
@@ -6,25 +8,60 @@
 	const removeToast = (id: number) => {
 		toasts.value = toasts.value.filter((toast) => toast.id !== id);
 	};
+
+	const displayToast = async (element: Element, done: () => void) => {
+		gsap.set(element, {
+			opacity: 0,
+			y: -20
+		});
+
+		gsap.to(element, {
+			opacity: 1,
+			y: 0,
+			duration: 0.2,
+			ease: "power2.inOut",
+			onComplete: () => {
+				done();
+			}
+		});
+	};
+
+	const hideToast = (element: Element, done: () => void) => {
+		gsap.to(element, {
+			opacity: 0,
+			scale: 0.8,
+			duration: 0.15,
+			ease: "power2.inOut",
+			onComplete: () => {
+				done();
+			}
+		});
+	};
 </script>
 
 <template>
 	<div class="toast__container">
-		<Toast
-			v-for="{ id, closeButton, duration, type, title, message } in toasts"
-			:key="id"
-			:close-button="closeButton"
-			:duration="duration"
-			:type="type"
-			@close="removeToast(id)"
+		<TransitionGroup
+			:css="false"
+			@enter="(el, done) => displayToast(el, done)"
+			@leave="(el, done) => hideToast(el, done)"
 		>
-			<template v-slot:title>
-				<p class="toast__title">{{ title }}</p>
-			</template>
-			<template v-slot:text>
-				<p class="toast__text">{{ message }}</p>
-			</template>
-		</Toast>
+			<Toast
+				v-for="{ id, closeButton, duration, type, title, message } in toasts"
+				:key="id"
+				:close-button="closeButton"
+				:duration="duration"
+				:type="type"
+				@close="removeToast(id)"
+			>
+				<template v-slot:title>
+					<p class="toast__title">{{ title }}</p>
+				</template>
+				<template v-slot:text>
+					<p class="toast__text">{{ message }}</p>
+				</template>
+			</Toast>
+		</TransitionGroup>
 	</div>
 </template>
 
