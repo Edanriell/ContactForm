@@ -116,6 +116,7 @@
 						label-text="Last Name"
 					/>
 					<Transition
+						:css="false"
 						@enter="(el, done) => displayErrorMessage(el, done)"
 						@leave="(el, done) => hideErrorMessage(el, done)"
 					>
