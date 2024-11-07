@@ -2,10 +2,10 @@
 	import gsap from "gsap";
 
 	type ButtonProps = {
-		buttonText: string;
+		isDataLoading?: boolean;
 	};
 
-	const { buttonText } = defineProps<ButtonProps>();
+	const { isDataLoading = false } = defineProps<ButtonProps>();
 
 	const handleButtonMouseEnter = (element: EventTarget | null) => {
 		gsap.to(element, { scale: 1.05, duration: 0.2, ease: "power2.out" });
@@ -37,6 +37,35 @@
 			ease: "power2.inOut"
 		});
 	};
+
+	const displayContent = async (element: Element, done: () => void) => {
+		gsap.set(element, {
+			opacity: 0,
+			y: -20
+		});
+
+		gsap.to(element, {
+			opacity: 1,
+			y: 0,
+			duration: 0.2,
+			ease: "power2.inOut",
+			onComplete: () => {
+				done();
+			}
+		});
+	};
+
+	const hideContent = (element: Element, done: () => void) => {
+		gsap.to(element, {
+			opacity: 0,
+			y: 20,
+			duration: 0.2,
+			ease: "power2.inOut",
+			onComplete: () => {
+				done();
+			}
+		});
+	};
 </script>
 
 <template>
@@ -48,14 +77,21 @@
 		@mouseleave="handleButtonMouseLeave($event.target)"
 		@mouseup="handleButtonMouseUp($event.target)"
 	>
-		{{ buttonText }}
+		<Transition
+			:css="false"
+			@enter="(el, done) => displayContent(el, done)"
+			@leave="(el, done) => hideContent(el, done)"
+		>
+			<slot v-if="!isDataLoading" name="content"></slot>
+			<slot v-else-if="isDataLoading" name="loader"></slot>
+		</Transition>
 	</button>
 </template>
 
 <style scoped>
 	.button {
+		position: relative;
 		border-radius: 8rem;
-		padding: 16rem 0;
 		background: var(--color-green-600);
 		width: 100%;
 		font-family: var(--font-family), sans-serif;
@@ -64,5 +100,7 @@
 		line-height: 150%;
 		color: var(--color-white);
 		cursor: pointer;
+		overflow: hidden;
+		height: 59rem;
 	}
 </style>

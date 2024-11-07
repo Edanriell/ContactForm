@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+	import { ref } from "vue";
 	import { useField, useForm } from "vee-validate";
 	import { toTypedSchema } from "@vee-validate/zod";
 	import gsap from "gsap";
@@ -6,10 +7,13 @@
 	import { Input } from "@shared/ui/input";
 	import { Button } from "@shared/ui/button";
 	import { Loader } from "@shared/ui/loader/ui";
+	import { addToast } from "@shared/ui/toast/model";
 
 	import { contactUsFormValidationSchema } from "../model";
-	import { createMessage } from "@features/contact-us-form/api";
-	import { addToast } from "@shared/ui/toast/model";
+	import { createMessage } from "../api";
+
+	const contactUsFormDataState = ref<"idle" | "failure" | "success">("idle");
+	const isDataSending = ref<boolean>(false);
 
 	const { handleSubmit } = useForm({
 		validationSchema: toTypedSchema(contactUsFormValidationSchema),
@@ -37,16 +41,28 @@
 			message: "Thanks for completing the form. We’ll be in touch soon!"
 		});
 
-		const response = await createMessage({
-			firstName: firstName.value as string,
-			lastName: lastName.value as string,
-			emailAddress: emailAddress.value as string,
-			queryType: queryType.value as string,
-			message: message.value as string,
-			serviceAgreement: serviceAgreement.value as string
-		});
+		try {
+			isDataSending.value = true;
 
-		console.log(response);
+			const response = await createMessage({
+				firstName: firstName.value as string,
+				lastName: lastName.value as string,
+				emailAddress: emailAddress.value as string,
+				queryType: queryType.value as string,
+				message: message.value as string,
+				serviceAgreement: serviceAgreement.value as string
+			});
+
+			contactUsFormDataState.value = "success";
+
+			console.log(response);
+		} catch (error) {
+			contactUsFormDataState.value = "failure";
+			console.error(error);
+		} finally {
+			isDataSending.value = false;
+			contactUsFormDataState.value = "idle";
+		}
 	});
 
 	const displayErrorMessage = (element: Element, done: () => void) => {
@@ -81,7 +97,6 @@
 
 <template>
 	<form class="contact-us-form" @submit.prevent="onContactUsFormSubmit">
-		<Loader />
 		<h2 class="contact-us-form__title">Contact Us</h2>
 		<fieldset class="contact-us-form__fieldset">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
@@ -99,6 +114,7 @@
 						label-text="First Name"
 					/>
 					<Transition
+						:css="false"
 						@enter="(el, done) => displayErrorMessage(el, done)"
 						@leave="(el, done) => hideErrorMessage(el, done)"
 					>
@@ -144,6 +160,7 @@
 					label-text="Email Address"
 				/>
 				<Transition
+					:css="false"
 					@enter="(el, done) => displayErrorMessage(el, done)"
 					@leave="(el, done) => hideErrorMessage(el, done)"
 				>
@@ -183,6 +200,7 @@
 					/>
 				</div>
 				<Transition
+					:css="false"
 					@enter="(el, done) => displayErrorMessage(el, done)"
 					@leave="(el, done) => hideErrorMessage(el, done)"
 				>
@@ -207,6 +225,7 @@
 					label-text="Message"
 				/>
 				<Transition
+					:css="false"
 					@enter="(el, done) => displayErrorMessage(el, done)"
 					@leave="(el, done) => hideErrorMessage(el, done)"
 				>
@@ -232,6 +251,7 @@
 					value="true"
 				/>
 				<Transition
+					:css="false"
 					@enter="(el, done) => displayErrorMessage(el, done)"
 					@leave="(el, done) => hideErrorMessage(el, done)"
 				>
@@ -241,7 +261,17 @@
 				</Transition>
 			</div>
 		</fieldset>
-		<Button button-text="Submit" />
+		<Button :is-data-loading="isDataSending">
+			<template v-slot:content>
+				<p class="button__submit-text">Submit</p>
+			</template>
+			<template v-slot:loader>
+				<div class="button__loader">
+					<Loader />
+					<p>Sending data</p>
+				</div>
+			</template>
+		</Button>
 	</form>
 </template>
 
@@ -372,5 +402,24 @@
 		font-size: 16rem;
 		line-height: 150%;
 		color: var(--color-red);
+	}
+
+	.button__loader {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		column-gap: 12rem;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.button__submit-text {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 </style>
