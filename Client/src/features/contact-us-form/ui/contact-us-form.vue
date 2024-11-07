@@ -5,10 +5,11 @@
 
 	import { Input } from "@shared/ui/input";
 	import { Button } from "@shared/ui/button";
+	import { Loader } from "@shared/ui/loader/ui";
 
 	import { contactUsFormValidationSchema } from "../model";
 	import { createMessage } from "@features/contact-us-form/api";
-	import { addToast } from "@shared/ui/toast";
+	import { addToast } from "@shared/ui/toast/model";
 
 	const { handleSubmit } = useForm({
 		validationSchema: toTypedSchema(contactUsFormValidationSchema),
@@ -80,6 +81,7 @@
 
 <template>
 	<form class="contact-us-form" @submit.prevent="onContactUsFormSubmit">
+		<Loader />
 		<h2 class="contact-us-form__title">Contact Us</h2>
 		<fieldset class="contact-us-form__fieldset">
 			<legend class="contact-us-form__legend contact-us-form__legend--display--none">
