@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import { ref } from "vue";
+	import { ref, watch } from "vue";
 	import { useField, useForm } from "vee-validate";
 	import { toTypedSchema } from "@vee-validate/zod";
 	import gsap from "gsap";
@@ -35,12 +35,25 @@
 	const { value: serviceAgreement, errorMessage: serviceAgreementError } =
 		useField("serviceAgreement");
 
-	const onContactUsFormSubmit = handleSubmit(async () => {
-		addToast({
-			title: "Message Sent!",
-			message: "Thanks for completing the form. We’ll be in touch soon!"
-		});
+	watch(
+		() => contactUsFormDataState.value,
+		(value) => {
+			if (value === "failure") {
+				addToast({
+					title: "Submission Failed",
+					message: "There was an error submitting the form. Please try again.",
+					type: "error"
+				});
+			} else if (value === "success") {
+				addToast({
+					title: "Message Sent!",
+					message: "Thanks for completing the form. We’ll be in touch soon!"
+				});
+			}
+		}
+	);
 
+	const onContactUsFormSubmit = handleSubmit(async () => {
 		try {
 			isDataSending.value = true;
 
@@ -60,8 +73,8 @@
 			contactUsFormDataState.value = "failure";
 			console.error(error);
 		} finally {
+			setTimeout(() => (contactUsFormDataState.value = "idle"));
 			isDataSending.value = false;
-			contactUsFormDataState.value = "idle";
 		}
 	});
 
