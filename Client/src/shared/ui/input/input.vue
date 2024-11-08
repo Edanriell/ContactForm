@@ -3,7 +3,7 @@
 	import { ref, watch } from "vue";
 
 	type InputProps = {
-		modelValue: string;
+		modelValue: string | boolean;
 		labelText: string;
 		labelFor: string;
 		inputName: string;
@@ -39,6 +39,11 @@
 		const target = event.target as HTMLInputElement;
 		emit("update:modelValue", target.value);
 	};
+
+	function updateBooleanValue(event: Event) {
+		const target = event.target as HTMLInputElement;
+		emit("update:modelValue", target.checked);
+	}
 
 	const handleInputMouseEnter = (element: EventTarget | null) => {
 		if (!isValid || isSelected) return;
@@ -77,10 +82,14 @@
 	};
 
 	const applyIsSelectedRadioInputLabelStyles = (element: EventTarget | null) => {
+		gsap.set(element, {
+			backgroundColor: "#fff"
+		});
+
 		gsap.to(element, {
 			backgroundColor: "#e0f1e8",
 			borderColor: "#0c7d69",
-			duration: 0.2,
+			duration: 0.15,
 			ease: "power2.out"
 		});
 	};
@@ -250,7 +259,7 @@
 			:id="inputId"
 			ref="textareaRef"
 			:name="inputName"
-			:value="modelValue"
+			:value="modelValue as string"
 			autocomplete="off"
 			class="textarea"
 			spellcheck="true"
@@ -276,11 +285,11 @@
 	>
 		<input
 			:id="inputId"
+			:checked="value as unknown as boolean"
 			:name="inputName"
-			:value="value"
 			class="checkbox-input"
 			type="checkbox"
-			@change="updateValue"
+			@change="updateBooleanValue"
 		/>
 		<span ref="checkboxInputCheckMarkRef" class="checkbox-input__check-mark"></span>
 		<span class="checkbox-input__label-name">{{ labelText }} <span>*</span></span>
