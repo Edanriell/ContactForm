@@ -23,7 +23,7 @@
 			emailAddress: "",
 			queryType: "",
 			message: "",
-			serviceAgreement: ""
+			serviceAgreement: false
 		}
 	});
 
@@ -63,7 +63,7 @@
 				emailAddress: emailAddress.value as string,
 				queryType: queryType.value as string,
 				message: message.value as string,
-				serviceAgreement: serviceAgreement.value as string
+				serviceAgreement: (serviceAgreement.value as boolean).toString()
 			});
 
 			contactUsFormDataState.value = "success";
@@ -254,14 +254,13 @@
 			</legend>
 			<div class="contact-us-form__input-wrapper contact-us-form__input-wrapper--type--column">
 				<Input
-					v-model="serviceAgreement as string"
-					:is-selected="serviceAgreement === 'true'"
+					v-model="serviceAgreement as boolean"
+					:is-selected="serviceAgreement === true"
 					input-id="service-agreement"
 					input-name="service-agreement"
 					input-type="checkbox"
 					label-for="service-agreement"
 					label-text="I consent to being contacted by the team"
-					value="true"
 				/>
 				<Transition
 					:css="false"

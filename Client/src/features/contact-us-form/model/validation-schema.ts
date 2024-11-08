@@ -10,6 +10,6 @@ export const contactUsFormValidationSchema = z.object({
 	queryType: z.string().min(1, "Please select a query type"),
 	message: z.string().min(1, "This field is required"),
 	serviceAgreement: z
-		.string()
-		.refine((value) => Boolean(value), "To submit this form, please consent to being contacted")
+		.boolean()
+		.refine((value) => value, "To submit this form, please consent to being contacted")
 });
