@@ -12,6 +12,7 @@
 		isValid?: boolean;
 		isSelected?: boolean;
 		value?: string;
+		testId?: string;
 	};
 
 	const {
@@ -23,7 +24,8 @@
 		inputType = "text",
 		isValid = true,
 		isSelected = false,
-		value = ""
+		value = "",
+		testId = ""
 	} = defineProps<InputProps>();
 
 	const textInputRef = ref<HTMLInputElement>();
@@ -198,6 +200,7 @@
 		<input
 			:id="inputId"
 			ref="textInputRef"
+			:data-testid="testId"
 			:name="inputName"
 			:value="modelValue"
 			class="text-input"
@@ -216,6 +219,7 @@
 		<input
 			:id="inputId"
 			ref="emailInputRef"
+			:data-testid="testId"
 			:name="inputName"
 			:value="modelValue"
 			class="email-input"
@@ -243,6 +247,7 @@
 	>
 		<input
 			:id="inputId"
+			:data-testid="testId"
 			:name="inputName"
 			:value="value"
 			class="radio-input"
@@ -258,6 +263,7 @@
 		<textarea
 			:id="inputId"
 			ref="textareaRef"
+			:data-testid="testId"
 			:name="inputName"
 			:value="modelValue as string"
 			autocomplete="off"
@@ -286,6 +292,7 @@
 		<input
 			:id="inputId"
 			:checked="value as unknown as boolean"
+			:data-testid="testId"
 			:name="inputName"
 			class="checkbox-input"
 			type="checkbox"

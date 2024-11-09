@@ -125,6 +125,7 @@
 						input-type="text"
 						label-for="first-name"
 						label-text="First Name"
+						test-id="first-name"
 					/>
 					<Transition
 						:css="false"
@@ -145,6 +146,7 @@
 						input-type="text"
 						label-for="last-name"
 						label-text="Last Name"
+						test-id="last-name"
 					/>
 					<Transition
 						:css="false"
@@ -171,6 +173,7 @@
 					input-type="email"
 					label-for="email-address"
 					label-text="Email Address"
+					test-id="email-address"
 				/>
 				<Transition
 					:css="false"
@@ -199,6 +202,7 @@
 						input-type="radio"
 						label-for="general-enquiry"
 						label-text="General Enquiry"
+						test-id="radio"
 						value="General Enquiry"
 					/>
 					<Input
@@ -209,6 +213,7 @@
 						input-type="radio"
 						label-for="support-request"
 						label-text="Support Request"
+						test-id="radio"
 						value="Support Request"
 					/>
 				</div>
@@ -236,6 +241,7 @@
 					input-type="textarea"
 					label-for="message"
 					label-text="Message"
+					test-id="message"
 				/>
 				<Transition
 					:css="false"
@@ -261,6 +267,7 @@
 					input-type="checkbox"
 					label-for="service-agreement"
 					label-text="I consent to being contacted by the team"
+					test-id="service-agreement"
 				/>
 				<Transition
 					:css="false"
@@ -273,7 +280,7 @@
 				</Transition>
 			</div>
 		</fieldset>
-		<Button :is-data-loading="isDataSending">
+		<Button :is-data-loading="isDataSending" data-testid="submit">
 			<template v-slot:content>
 				<p class="button__submit-text">Submit</p>
 			</template>
