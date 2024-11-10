@@ -85,11 +85,14 @@ describe("contact-us-form.vue", () => {
 
 	it("submits form data successfully and shows success toast", async () => {
 		(createMessage as vi.mock).mockResolvedValueOnce({
-			message: "Message sent successfully"
+			id: 14,
+			firstName: "John",
+			lastName: "Doe",
+			emailAddress: "john.doe@example.com",
+			queryType: "General Enquiry",
+			message: "This is a test message.",
+			serviceAgreement: "true"
 		});
-
-		// TODO FIX
-		// Response from server is different
 
 		setupForm();
 
