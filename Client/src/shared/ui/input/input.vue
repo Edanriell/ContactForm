@@ -44,6 +44,7 @@
 
 	function updateBooleanValue(event: Event) {
 		const target = event.target as HTMLInputElement;
+		console.log(target.checked);
 		emit("update:modelValue", target.checked);
 	}
 
@@ -285,13 +286,12 @@
 		class="checkbox-input__label"
 		@blur="handleInputBlur(checkboxInputCheckMarkRef!)"
 		@focus="handleInputFocus(checkboxInputCheckMarkRef!)"
-		@input="updateValue"
+		@input="updateBooleanValue"
 		@mouseenter="handleInputMouseEnter(checkboxInputCheckMarkRef!)"
 		@mouseleave="handleInputMouseLeave(checkboxInputCheckMarkRef!)"
 	>
 		<input
 			:id="inputId"
-			:checked="value as unknown as boolean"
 			:data-testid="testId"
 			:name="inputName"
 			class="checkbox-input"
