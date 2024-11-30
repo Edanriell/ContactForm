@@ -57,7 +57,7 @@
 		try {
 			isDataSending.value = true;
 
-			const response = await createMessage({
+			await createMessage({
 				firstName: firstName.value as string,
 				lastName: lastName.value as string,
 				emailAddress: emailAddress.value as string,
@@ -67,8 +67,6 @@
 			});
 
 			contactUsFormDataState.value = "success";
-
-			console.log(response);
 		} catch (error) {
 			contactUsFormDataState.value = "failure";
 			console.error(error);
